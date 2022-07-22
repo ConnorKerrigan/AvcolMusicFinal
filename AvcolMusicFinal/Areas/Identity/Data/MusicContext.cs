@@ -42,7 +42,7 @@ namespace AvcolMusicFinal.Areas.Identity.Data
         public MusicContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<MusicContext>();
-            optionsBuilder.UseSqlServer("DefaultConnection");
+            optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = AvcolMusic; Trusted_Connection = True;");
 
             return new MusicContext(optionsBuilder.Options);
         }

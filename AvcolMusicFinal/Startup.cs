@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AvcolMusicFinal.Areas.Identity.Data;
+using AvcolMusicFinal.Models;
 
 namespace AvcolMusicFinal
 {
@@ -35,7 +36,7 @@ namespace AvcolMusicFinal
 
 
 
-            services.AddIdentity<ACUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<ACUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                  .AddDefaultUI()
                  .AddEntityFrameworkStores<MusicContext>()
                  .AddDefaultTokenProviders();
@@ -78,6 +79,8 @@ namespace AvcolMusicFinal
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+            
+            Seeder.Initialize(app.ApplicationServices.CreateScope().ServiceProvider);
         }
     }
 }
