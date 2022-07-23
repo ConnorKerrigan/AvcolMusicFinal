@@ -24,6 +24,7 @@ namespace AvcolMusicFinal.Views.Teachers
         // GET: Teachers
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int searchInt, int? pageNumber)
         {
+            //uses connection strings to sort the data in tables
             ViewData["CurrentSort"] = sortOrder;
             ViewData["IDSortParm"] = sortOrder == "ID" ? "ID_desc" : "ID";
             ViewData["SurnameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Surname_desc" : "";
@@ -40,6 +41,7 @@ namespace AvcolMusicFinal.Views.Teachers
 
             ViewData["CurrentFilter"] = searchString;
 
+            //Queries the data to obtain data which matches search string in multiple fields
             var teachers = from s in _context.Teacher
                            select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -100,6 +102,7 @@ namespace AvcolMusicFinal.Views.Teachers
         }
 
         // GET: Teachers/Create
+        [Authorize(Policy = "adminPolicy")]
         public IActionResult Create()
         {
             return View();
@@ -110,18 +113,30 @@ namespace AvcolMusicFinal.Views.Teachers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create([Bind("TeacherID,Surname,Firstname")] Teacher teacher)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(teacher);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(teacher);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+               
+            }
+            catch(DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Please try again, and if the problem persists " +
+                    "please see your system administrator.");
             }
             return View(teacher);
         }
 
         // GET: Teachers/Edit/5
+        [Authorize(Policy = "adminPolicy")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -173,6 +188,7 @@ namespace AvcolMusicFinal.Views.Teachers
         }
 
         // GET: Teachers/Delete/5
+        [Authorize(Policy = "adminPolicy")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -193,6 +209,7 @@ namespace AvcolMusicFinal.Views.Teachers
         // POST: Teachers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminPolicy")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var teacher = await _context.Teacher.FindAsync(id);

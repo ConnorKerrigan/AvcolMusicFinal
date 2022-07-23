@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AvcolMusicFinal.Models
 {
+    [Index(nameof(TeacherID), IsUnique = true)]
     public class Teacher
     {
         [Required]

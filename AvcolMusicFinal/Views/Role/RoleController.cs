@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AvcolMusicFinal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "adminPolicy")]
     public class RoleController : Controller
     {
         RoleManager<IdentityRole> roleManager;
@@ -15,14 +15,13 @@ namespace AvcolMusicFinal.Controllers
         {
             this.roleManager = roleManager;
         }
-
-        [Authorize(Policy = "studentPolicy")]
+        [Authorize(Policy = "adminPolicy")]
         public IActionResult Index()
         {
             var roles = roleManager.Roles.ToList();
             return View(roles);
         }
-        [Authorize(Policy = "teacherPolicy")]
+        [Authorize(Policy = "adminPolicy")]
         public IActionResult Create()
         {
             return View(new IdentityRole());

@@ -3,6 +3,7 @@
 @inject SignInManager<ACUser> SignInManager
 @inject UserManager<ACUser> UserManager
 
+    <!--Added to the end of the navigaion bar to allow users to login/register, or displays signed in user from all pages-->
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {

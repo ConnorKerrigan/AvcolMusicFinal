@@ -35,6 +35,7 @@
                     <th>Start Time</th>
                     <th>End Time</th>
                 </tr>
+                <!--This table queries the data related to the teacher to show them students who have a lesson that coinsides with their class.-->
                 @foreach (var item in Model.Classes)
                 {
                     @foreach (var b in item.Student.MusicTimetables)

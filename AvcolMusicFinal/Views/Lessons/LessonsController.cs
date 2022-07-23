@@ -22,6 +22,8 @@ namespace AvcolMusicFinal.Views.Lessons
         }
 
         // GET: Lessons
+        //paramater variables here are visible in the url link, which allows the page to be quickly replicated through a shared link
+        
         public async Task<IActionResult> Index(int? pageNumber, int? searchInt, int currentFilter)
         {
             if (searchInt != null)
@@ -67,6 +69,7 @@ namespace AvcolMusicFinal.Views.Lessons
         }
 
         // GET: Lessons/Create
+        [Authorize(Policy = "teacherPolicy")]
         public IActionResult Create()
         {
             ViewData["GroupID"] = new SelectList(_context.Group, "GroupID", "GroupID");
@@ -91,6 +94,7 @@ namespace AvcolMusicFinal.Views.Lessons
         }
 
         // GET: Lessons/Edit/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -144,6 +148,7 @@ namespace AvcolMusicFinal.Views.Lessons
         }
 
         // GET: Lessons/Delete/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -23,8 +23,10 @@ namespace AvcolMusicFinal.Views.Students
 
         // GET: Students
         [Authorize(Policy = "studentPolicy")]
+        //paramater variables here are visible in the url link, which allows the page to be quickly replicated through a shared link
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int searchInt, int? pageNumber)
         {
+            //uses connection strings to sort data in tables
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["FirstNameSortParm"] = sortOrder == "FirstName" ? "FirstName_desc" : "FirstName";
@@ -41,6 +43,7 @@ namespace AvcolMusicFinal.Views.Students
 
             ViewData["CurrentFilter"] = searchString;
 
+            //Queries the data to obtain data which matches search string in multiple fields
             var students = from s in _context.Student
                            select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -74,6 +77,7 @@ namespace AvcolMusicFinal.Views.Students
         }
 
         // GET: Students/Details/5
+        [Authorize(Policy = "studentPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -97,6 +101,7 @@ namespace AvcolMusicFinal.Views.Students
         }
 
         // GET: Students/Create
+        [Authorize(Policy = "adminPolicy")]
         public IActionResult Create()
         {
             return View();
@@ -151,6 +156,7 @@ namespace AvcolMusicFinal.Views.Students
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy ="adminPolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("StudentID,Surname,FirstName,Year,HomeRoom")] Student student)
         {
             if (id != student.StudentID)
@@ -182,6 +188,7 @@ namespace AvcolMusicFinal.Views.Students
         }
 
         // GET: Students/Delete/5
+        [Authorize(Policy = "adminPolicy")]
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)

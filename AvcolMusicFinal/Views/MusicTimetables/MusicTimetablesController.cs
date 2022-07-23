@@ -22,6 +22,8 @@ namespace AvcolMusicFinal.Views.MusicTimetables
         }
 
         // GET: MusicTimetables
+        //paramater variables here are visible in the url link, which allows the page to be quickly replicated through a shared link
+        [Authorize(Policy = "studentPolicy")]
         public async Task<IActionResult> Index(string currentFilter, string searchString, int? pageNumber)
         {
             if (searchString != null)
@@ -70,6 +72,7 @@ namespace AvcolMusicFinal.Views.MusicTimetables
         }
 
         // GET: MusicTimetables/Create
+        [Authorize(Policy = "teacherPolicy")]
         public IActionResult Create()
         {
             ViewData["GroupID"] = new SelectList(_context.Group, "GroupID", "GroupID");
@@ -96,6 +99,7 @@ namespace AvcolMusicFinal.Views.MusicTimetables
         }
 
         // GET: MusicTimetables/Edit/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -151,6 +155,7 @@ namespace AvcolMusicFinal.Views.MusicTimetables
         }
 
         // GET: MusicTimetables/Delete/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -99,6 +99,7 @@ namespace AvcolMusicFinal.Views.Classes
         }
 
         // GET: Classes/Create
+        [Authorize(Policy = "teacherPolicy")]
         public IActionResult Create()
         {
             ViewData["StudentID"] = new SelectList(_context.Student, "StudentID", "StudentID");
@@ -125,6 +126,7 @@ namespace AvcolMusicFinal.Views.Classes
         }
 
         // GET: Classes/Edit/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -180,6 +182,7 @@ namespace AvcolMusicFinal.Views.Classes
         }
 
         // GET: Classes/Delete/5
+        [Authorize(Policy = "teacherPolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

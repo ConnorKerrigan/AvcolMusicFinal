@@ -15,18 +15,20 @@ namespace AvcolMusicFinal.Models
         {
             var context = serviceProvider.GetService<MusicContext>();
 
-            string[] roles = new string[] { "Admin", "Teacher", "Student" };
+            string[] roles = new string[] { "ADMIN", "TEACHER", "STUDENT" };
 
+            //adds each string in roles[] to the database as a role, if it does not already exist
             foreach (string role in roles)
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
 
                 if (!context.Roles.Any(r => r.Name == role))
                 {
-                    roleStore.CreateAsync(new IdentityRole(role));
+                    roleStore.CreateAsync(new IdentityRole { Name = role, NormalizedName = role.ToUpper() });
+                    context.SaveChangesAsync();
                 }
             }
-            context.SaveChangesAsync();
+
         }
     }
 }

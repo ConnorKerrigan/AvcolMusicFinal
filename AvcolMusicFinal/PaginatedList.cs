@@ -15,6 +15,7 @@ namespace AvcolMusicFinal
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            //uses math.ceiling to round the equation and return the number of pages depending on page size and number of items.
 
             this.AddRange(items);
         }

@@ -32,10 +32,7 @@ namespace AvcolMusicFinal
             services.AddDbContext<MusicContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //throw new Exception(Configuration.GetConnectionString("DefaultConnection"));
-
-
-
+            //RequireConfirmedAccount set to false so users do not need to use email confirmation to access site features
             services.AddIdentity<ACUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                  .AddDefaultUI()
                  .AddEntityFrameworkStores<MusicContext>()
@@ -43,11 +40,12 @@ namespace AvcolMusicFinal
 
             services.AddControllersWithViews();
 
+            //3 policies which act as layers of authorization permissions
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("adminPolicy", builder => builder.RequireRole("Admin"));
-                options.AddPolicy("teacherPolicy", builder => builder.RequireRole("Admin", "Teacher"));
-                options.AddPolicy("studentPolicy", builder => builder.RequireRole("Admin", "Teacher", "Student"));
+                options.AddPolicy("adminPolicy", builder => builder.RequireRole("ADMIN"));
+                options.AddPolicy("teacherPolicy", builder => builder.RequireRole("ADMIN", "TEACHER"));
+                options.AddPolicy("studentPolicy", builder => builder.RequireRole("ADMIN", "TEACHER", "STUDENT"));
             });
         }
 
@@ -80,6 +78,7 @@ namespace AvcolMusicFinal
                 endpoints.MapRazorPages();
             });
             
+            //calls the seeder class to add roles data
             Seeder.Initialize(app.ApplicationServices.CreateScope().ServiceProvider);
         }
     }
